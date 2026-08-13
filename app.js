@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const PLAYER_NAME = "ソウタ";
-    const BOT_NAME = "ハルト";
+    const PLAYER_NAME = "";
+    const BOT_NAME = "神罪閣下親王";
 
     const REPLY_TIMING = {
         NORMAL_REPLY: 1500,         // 単発の返信に要する時間
@@ -12,13 +12,41 @@ document.addEventListener('DOMContentLoaded', () => {
         BLOCK_GIMMICK_TRANSITION: 2000 // 「入力中...」から強制解除されるまでの時間
     };
 
-    const botReplies = [
-        `ねえ${PLAYER_NAME}、今どこ？`,
-    ];
+// 【通常モード】ちょっと距離感が近くて不穏な会話
+const botReplies = [
+    `ねえ${PLAYER_NAME}、今どこ？`,
+    `返信遅くない？なにしてたの？`,
+    `ずっとスマホ見てるでしょ？ぼくにはわかるよ。`,
+    `ねえ、今日だれと会ってたの？`,
+    `${PLAYER_NAME}のこと、ぼくが一番よく知ってるんだからね。`,
+    `通知見えたでしょ？無視しないでよ。`,
+    `ねえ、写真送ってよ。今の${PLAYER_NAME}が見たいな。`,
+    `他の人と話してたりしないよね…？`,
+    `メッセージ届いてる？ねえってば。`,
+    `どこに行こうとしてるの？`,
+    `そんなに冷たくしないでよ、悲しくなるじゃん。`,
+    `今すぐ話したいな。電話してもいい？`
+];
 
-    const horrorReplies = [
-        `いま、${PLAYER_NAME}の部屋の明かりが見えるよ`,
-    ];
+// 【ホラーモード】強制解除後の狂気と恐怖のメッセージ
+const horrorReplies = [
+    `いま、${PLAYER_NAME}の部屋の明かりが見えるよ`,
+    `ブロックしようとしたでしょ？知ってるよ。`,
+    `逃げられるとでも思ってるの？`,
+    `画面の向こうからずっと見てるよ。`,
+    `ねえ、うしろ`,
+    `足音、聞こえない？`,
+    `インターホン押したら出てくれる？`,
+    `鍵、閉めた？`,
+    `部屋のカーテン、少し開いてるよ。`,
+    `ずっと一緒にいようねって約束したのに。`,
+    `スマホ閉じたって無駄だよ。`,
+    `ねえねえねえねえねえねえねえねえ`,
+    `どこに隠れてるの？探すの得意なんだ。`,
+    `もうすぐ着くから、そこで待っててね。`,
+    `逃げようとする${PLAYER_NAME}もかわいいね。`,
+    `大丈夫、痛くしないからさ。`
+];
 
     const botIcon = "image/icon.png";
     const chatLog = document.getElementById('chat-log');
