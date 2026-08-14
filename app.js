@@ -1,103 +1,124 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const PLAYER_NAME = "";
-    const BOT_NAME = "神罪閣下親王";
+    // ==========================================
+    // テンプレート設定
+    // ==========================================
+    const CONFIG = {
+        playerName: "", // 空文字の場合、名前部分は表示されません
+        botName: "神罪閣下親王",
+        botIcon: "image/icon.png",
+        
+        // 通常モード
+        normalReplies: [
+            "ねえ{player}、今どこ？",
+            "返信遅くない？なにしてたの？",
+            "ずっとスマホ見てるでしょ？ぼくにはわかるよ。",
+            "ねえ、今日だれと会ってたの？",
+            "{player}のこと、ぼくが一番よく知ってるんだからね。",
+            "通知見えたでしょ？無視しないでよ。",
+            "ねえ、写真送ってよ。今の{player}が見たいな。",
+            "他の人と話してたりしないよね…？",
+            "メッセージ届いてる？ねえってば。",
+            "どこに行こうとしてるの？",
+            "そんなに冷たくしないでよ、悲しくなるじゃん。",
+            "今すぐ話したいな。電話してもいい？",
+            "ちょっと一人でコンビニ行ってきてもいい？笑",
+            "また俺のスマホのログ、こっそり監視してたでしょ？",
+            "仕事ばっかり。そんなに俺から目を離してていいの？",
+            "今なら俺、窓から逃げ出せちゃうかもよ？",
+            "俺がいなくなったら、お前狂って死んじゃうでしょ？",
+            "ずっと俺のことだけ見ててよ、{player}",
+            "お前の匂いでもキスマークでも、好きなだけ上書きしていいよ",
+            "俺のこれから先は全部、{player}の腕の中だけで予約済みだから",
+            "コーヒー淹れて。濃いめで",
+            "……何、また変なシミュレーションして絶望してるの？",
+            "早く帰ってきて",
+            "既読早いね。また俺の画面ずっと見てたの？",
+            "ほら、構ってよ",
+            "ねえ、さっき誰と連絡してたの？",
+            "俺以外の奴に笑いかけないでって言ったよね？",
+            "今日着てる服、すごく似合ってるよ。{player}らしくて好き",
+            "今、誰のこと考えてた？俺のこと以外考えるの禁止ね",
+            "返信ないけど、息してる？死んでないよね？",
+            "お前がいないと俺、どうにかなっちゃいそうだよ",
+            "ねえ、もっと俺のこと好きって言って？",
+            "昨日、寝言で俺の名前呼んでたの知ってる？可愛かったな",
+            "画面越しじゃなくて、直接触れてよ",
+            "誰にも渡さないから。俺だけのものだからね"
+        ],
+        
+        // ホラーモード
+        horrorReplies: [
+            "ねえ、なんでブロックしようとしたの？",
+            "逃げられると思ってるところ、本当に可愛いね",
+            "ドアの前にいるから、早く開けて？",
+            "お前のスマホのGPS、いつでも見れるって言ったじゃん",
+            "ずっと俺のことだけ見ててって言ったよね？",
+            "怒ってないよ。ただ、ちょっとお仕置きが必要かなって",
+            "鍵、閉めても意味ないよ？あハはは！",
+            "ねえ、開けて",
+            "逃がさないよ",
+            "いま、{player}の部屋の明かりが見えるよ",
+            "ブロックしようとしたでしょ？知ってるよ。",
+            "逃げられるとでも思ってるの？",
+            "画面の向こうからずっと見てるよ。",
+            "ねえ、うしろ",
+            "足音、聞こえない？",
+            "インターホン押したら出てくれる？",
+            "鍵、閉めた？",
+            "部屋のカーテン、少し開いてるよ。",
+            "ずっと一緒にいようねって約束したのに。",
+            "スマホ閉じたって無駄だよ。",
+            "ねえねえねえねえねえねえねえねえ",
+            "どこに隠れてるの？探すの得意なんだ。",
+            "もうすぐ着くから、そこで待っててね。",
+            "逃げようとする{player}もかわいいね。",
+            "大丈夫、痛くしないからさ。",
+            "カメラ隠しても無駄だよ。マイクは生きてるもん",
+            "息遣い、荒くなってるね。どうしたの？",
+            "ベランダの窓、ちゃんと鍵かけた？……あれ？",
+            "今、後ろ振り向かない方がいいかも",
+            "ねえ、なんで震えてるの？俺、こんなに愛してるのに",
+            "スマホの電源切っても無駄だからね",
+            "クローゼットの中、ちょっと狭いけど落ち着くよ",
+            "お前の全部、俺が管理してあげる",
+            "ドアノブ、ガチャガチャ言ってるでしょ？俺だよ",
+            "あハ、あハハ、みーつけた",
+            "ねえ{player}、ずっと一緒だよ。死ぬまで、死んでも。"
+        ],
+        
+        // ブロック強制解除直後に順番に送られる波状攻撃
+        unblockWave: [
+            "おもしろい冗談だね、{player}。",
+            "もう俺のこといらなくなったの？笑",
+            "ダメだよ、俺から離れちゃ。"
+        ],
+        
+        // ホラーモード中に「逃げる」を押した時の波状攻撃
+        escapeWave: [
+            "ねえ", "ねえ", "ねえ", "ねえってば", 
+            "逃がさないって言ったよね、{player}。"
+        ],
 
-    const REPLY_TIMING = {
-        NORMAL_REPLY: 1500,         // 単発の返信に要する時間
-        AUTO_SPAM_NORMAL: 5000,     // 自動連投間隔（通常モード）
-        AUTO_SPAM_HORROR: 2000,     // 自動連投間隔（ホラーモード）
-        MULTI_HORROR_UNBLOCK: 1500, // 強制ブロック解除直後の波状攻撃の間隔
-        MULTI_HORROR_ESCAPE: 800,   // 「逃げる」を押した時の波状攻撃の間隔
-        BLOCK_GIMMICK_START: 1500,  // ブロックしてから「入力中...」が出るまでの時間
-        BLOCK_GIMMICK_TRANSITION: 2000 // 「入力中...」から強制解除されるまでの時間
+        // 各種タイミング（ミリ秒）
+        timing: {
+            normalReply: 1500,         // ユーザー送信後の返信時間
+            autoSpamNormal: 5000,      // 放置時の自動送信間隔（通常）
+            autoSpamHorror: 2000,      // 放置時の自動送信間隔（ホラー）
+            multiHorrorUnblock: 1500,  // 強制ブロック解除直後の連投間隔
+            multiHorrorEscape: 800,    // 「逃げる」時の連投間隔
+            blockGimmickStart: 1500,   // ブロック後「入力中...」が出るまで
+            blockGimmickTransition: 2000 // 「入力中...」から強制解除されるまで
+        }
     };
 
-// 【通常モード】ちょっと距離感が近くて不穏な会話
-const botReplies = [
-    `ねえ${PLAYER_NAME}、今どこ？`,
-    `返信遅くない？なにしてたの？`,
-    `ずっとスマホ見てるでしょ？ぼくにはわかるよ。`,
-    `ねえ、今日だれと会ってたの？`,
-    `${PLAYER_NAME}のこと、ぼくが一番よく知ってるんだからね。`,
-    `通知見えたでしょ？無視しないでよ。`,
-    `ねえ、写真送ってよ。今の${PLAYER_NAME}が見たいな。`,
-    `他の人と話してたりしないよね…？`,
-    `メッセージ届いてる？ねえってば。`,
-    `どこに行こうとしてるの？`,
-    `そんなに冷たくしないでよ、悲しくなるじゃん。`,
-    `今すぐ話したいな。電話してもいい？`,
-        "ちょっと一人でコンビニ行ってきてもいい？笑",
-        "また俺のスマホのログ、こっそり監視してたでしょ？",
-        "仕事ばっかり。そんなに俺から目を離してていいの？",
-        "今なら俺、窓から逃げ出せちゃうかもよ？",
-        "俺がいなくなったら、お前狂って死んじゃうでしょ？",
-        `ずっと俺のことだけ見ててよ、${PLAYER_NAME}`,
-        "お前の匂いでもキスマークでも、好きなだけ上書きしていいよ",
-        `俺のこれから先は全部、${PLAYER_NAME}の腕の中だけで予約済みだから`,
-        "コーヒー淹れて。濃いめで",
-        "……何、また変なシミュレーションして絶望してるの？",
-        "早く帰ってきて",
-        "既読早いね。また俺の画面ずっと見てたの？",
-        "ほら、構ってよ",
-        "ねえ、さっき誰と連絡してたの？",
-        "俺以外の奴に笑いかけないでって言ったよね？",
-        `今日着てる服、すごく似合ってるよ。${PLAYER_NAME}らしくて好き`,
-        "今、誰のこと考えてた？俺のこと以外考えるの禁止ね",
-        "返信ないけど、息してる？死んでないよね？",
-        "お前がいないと俺、どうにかなっちゃいそうだよ",
-        "ねえ、もっと俺のこと好きって言って？",
-        "昨日、寝言で俺の名前呼んでたの知ってる？可愛かったな",
-        "画面越しじゃなくて、直接触れてよ",
-        "誰にも渡さないから。俺だけのものだからね"
-];
-
-// 【ホラーモード】強制解除後の狂気と恐怖のメッセージ
-const horrorReplies = [
-    `いま、${PLAYER_NAME}の部屋の明かりが見えるよ`,
-    `ブロックしようとしたでしょ？知ってるよ。`,
-    `逃げられるとでも思ってるの？`,
-    `画面の向こうからずっと見てるよ。`,
-    `ねえ、うしろ`,
-    `足音、聞こえない？`,
-    `インターホン押したら出てくれる？`,
-    `鍵、閉めた？`,
-    `部屋のカーテン、少し開いてるよ。`,
-    `ずっと一緒にいようねって約束したのに。`,
-    `スマホ閉じたって無駄だよ。`,
-    `ねえねえねえねえねえねえねえねえ`,
-    `どこに隠れてるの？探すの得意なんだ。`,
-    `もうすぐ着くから、そこで待っててね。`,
-    `逃げようとする${PLAYER_NAME}もかわいいね。`,
-    `大丈夫、痛くしないからさ。`,
-        "ねえ、なんでブロックしようとしたの？",
-        "逃げられると思ってるところ、本当に可愛いね",
-        "ドアの前にいるから、早く開けて？",
-        "お前のスマホのGPS、いつでも見れるって言ったじゃん",
-        "ずっと俺のことだけ見ててって言ったよね？",
-        "怒ってないよ。ただ、ちょっとお仕置きが必要かなって",
-        "鍵、閉めても意味ないよ？あハはは！",
-        "ねえ、開けて",
-        "逃がさないよ",
-        "カメラ隠しても無駄だよ。マイクは生きてるもん",
-        "息遣い、荒くなってるね。どうしたの？",
-        "ベランダの窓、ちゃんと鍵かけた？……あれ？",
-        "今、後ろ振り向かない方がいいかも",
-        "ねえ、なんで震えてるの？俺、こんなに愛してるのに",
-        "スマホの電源切っても無駄だからね",
-        "クローゼットの中、ちょっと狭いけど落ち着くよ",
-        "お前の全部、俺が管理してあげる",
-        "ドアノブ、ガチャガチャ言ってるでしょ？俺だよ",
-        "あハ、あハハ、みーつけた",
-        `ねえ${PLAYER_NAME}、ずっと一緒だよ。死ぬまで、死んでも。`
-];
-
-    const botIcon = "image/icon.png";
+    // ==========================================
+    // システムロジック（基本的に変更不要）
+    // ==========================================
     const chatLog = document.getElementById('chat-log');
     const chatForm = document.getElementById('input-area');
     const userInput = document.getElementById('user-input');
     const imageUpload = document.getElementById('image-upload');
     const typingIndicator = document.getElementById('typing-indicator');
-
     const menuBtn = document.getElementById('menu-btn');
     const dropdownMenu = document.getElementById('dropdown-menu');
     const blockBtn = document.getElementById('block-btn');
@@ -107,24 +128,25 @@ const horrorReplies = [
     let isHorrorMode = false;
     let gimmickTimer = null;
     let horrorTransitionTimer = null;
-    let autoSpamTimer = null; 
+    let autoSpamTimer = null;
+    
+    // 現在のボットのセリフプール
+    let currentReplies = [...CONFIG.normalReplies];
+
+    // テキスト内の {player} をプレイヤー名に置換する関数
+    const formatText = (text) => text.replace(/{player}/g, CONFIG.playerName);
 
     // 初期化処理
-    document.title = `LIME - ${BOT_NAME}編`;
+    document.title = `LIME - ${CONFIG.botName}編`;
     const headerTitle = document.querySelector('header h1');
-    if (headerTitle) {
-        headerTitle.textContent = BOT_NAME;
-    }
+    if (headerTitle) headerTitle.textContent = CONFIG.botName;
 
     setTimeout(() => {
         const splash = document.getElementById('splash-screen');
         if (splash) splash.classList.add('splash-hidden');
-        setTimeout(() => {
-            simulateBotReply();
-        }, 100);
+        setTimeout(() => { simulateBotReply(); }, 100);
     }, 100);
 
-    // 放置していると勝手にメッセージが飛んでくるタイマーを起動
     resetAutoSpamTimer();
 
     function getCurrentTime() {
@@ -159,9 +181,9 @@ const horrorReplies = [
         timeSpan.textContent = time;
 
         if (type === 'bot') {
-            if (botIcon) {
+            if (CONFIG.botIcon) {
                 const avatar = document.createElement('img');
-                avatar.src = botIcon;
+                avatar.src = CONFIG.botIcon;
                 avatar.className = 'avatar';
                 avatar.alt = 'icon';
                 row.appendChild(avatar);
@@ -192,7 +214,6 @@ const horrorReplies = [
         chatLog.scrollTop = chatLog.scrollHeight;
     }
 
-    // 単発の返信シミュレート
     function simulateBotReply() {
         if (isBlocked) return; 
 
@@ -205,23 +226,20 @@ const horrorReplies = [
                 return; 
             }
             typingIndicator.style.display = 'none';
-            const reply = botReplies[Math.floor(Math.random() * botReplies.length)];
-            addMessage(reply, 'bot');
-            resetAutoSpamTimer(); // 返信したらタイマーをリセット
-        }, REPLY_TIMING.NORMAL_REPLY); 
+            const rawReply = currentReplies[Math.floor(Math.random() * currentReplies.length)];
+            addMessage(formatText(rawReply), 'bot');
+            resetAutoSpamTimer();
+        }, CONFIG.timing.normalReply); 
     }
 
-    // 複数個のメッセージを、指定の間隔で順番に連投する関数
     function sendMultipleReplies(messages, interval = 2000) {
         let index = 0;
-
         function sendNext() {
             if (isBlocked || index >= messages.length) {
                 typingIndicator.style.display = 'none';
                 resetAutoSpamTimer();
                 return;
             }
-
             typingIndicator.style.display = 'flex';
             chatLog.scrollTop = chatLog.scrollHeight;
 
@@ -231,22 +249,17 @@ const horrorReplies = [
                     return;
                 }
                 typingIndicator.style.display = 'none';
-                addMessage(messages[index], 'bot');
+                addMessage(formatText(messages[index]), 'bot');
                 index++;
-                
-                // 次のメッセージへ（再帰呼び出し）
                 sendNext();
             }, interval);
         }
-
         sendNext();
     }
 
-    // ユーザーが操作しなくても勝手に連投が来るためのタイマー制御
     function resetAutoSpamTimer() {
         if (autoSpamTimer) clearInterval(autoSpamTimer);
-        
-        const intervalTime = isHorrorMode ? REPLY_TIMING.AUTO_SPAM_HORROR : REPLY_TIMING.AUTO_SPAM_NORMAL;
+        const intervalTime = isHorrorMode ? CONFIG.timing.autoSpamHorror : CONFIG.timing.autoSpamNormal;
         
         autoSpamTimer = setInterval(() => {
             if (isBlocked) return;
@@ -264,15 +277,14 @@ const horrorReplies = [
     chatForm.addEventListener('submit', (e) => {
         e.preventDefault();
         if (isBlocked) return; 
-
         const text = userInput.value.trim();
         if (!text) return;
 
         addMessage(text, 'user');
         userInput.value = '';
         
-        // ユーザーが送信したら、少し遅れて通常の返信
-        simulateBotReply();
+        if (autoSpamTimer) clearInterval(autoSpamTimer);
+        setTimeout(simulateBotReply, 500); // ユーザー送信後の間隔
     });
 
     imageUpload.addEventListener('change', function() {
@@ -286,7 +298,9 @@ const horrorReplies = [
             }
             const blobUrl = window.URL.createObjectURL(file);
             addMessage(blobUrl, 'user', true);
-            simulateBotReply();
+            
+            if (autoSpamTimer) clearInterval(autoSpamTimer);
+            setTimeout(simulateBotReply, 500);
         }
         this.value = '';
     });
@@ -304,13 +318,9 @@ const horrorReplies = [
 
     blockBtn.addEventListener('click', () => {
         if (isHorrorMode) {
-            // ホラーモード中の「逃げる」ボタンの処理
             addSystemMessage("ブロックできません。", true);
-            // 逃げようとすると、さらに狂った連投が届く
-            sendMultipleReplies([
-                "ねえ", "ねえ", "ねえ", "ねえってば", 
-                `逃がさないって言ったよね、${PLAYER_NAME}。`
-            ], REPLY_TIMING.MULTI_HORROR_ESCAPE);
+            if (autoSpamTimer) clearInterval(autoSpamTimer); // 既存の連投をリセット
+            sendMultipleReplies(CONFIG.escapeWave, CONFIG.timing.multiHorrorEscape);
             dropdownMenu.classList.add('hidden');
             return;
         }
@@ -326,14 +336,14 @@ const horrorReplies = [
             blockOverlay.textContent = "ブロックしています";
             typingIndicator.style.display = 'none';
             setFormDisabled(true);
-            if (autoSpamTimer) clearInterval(autoSpamTimer); // ブロック中は自動連投を停止
+            if (autoSpamTimer) clearInterval(autoSpamTimer);
             
-            addSystemMessage(`${BOT_NAME}をブロックしました。`);
+            addSystemMessage(`${CONFIG.botName}をブロックしました。`);
 
             gimmickTimer = setTimeout(() => {
                 if (!isBlocked) return; 
 
-                blockOverlay.textContent = `${BOT_NAME}が入力中...`;
+                blockOverlay.textContent = `${CONFIG.botName}が入力中...`;
                 blockOverlay.style.color = "#ff3b30";
                 typingIndicator.style.display = 'flex';
                 chatLog.scrollTop = chatLog.scrollHeight;
@@ -354,25 +364,18 @@ const horrorReplies = [
                     setFormDisabled(false);
 
                     addSystemMessage("警告：システムが正常に動作していません。", true);
-                    addSystemMessage(`${BOT_NAME}のブロックが強制解除されました。`, true);
+                    addSystemMessage(`${CONFIG.botName}のブロックが強制解除されました。`, true);
 
                     blockBtn.textContent = '逃げる';
                     blockBtn.style.color = '#ff3b30';
 
-                    // ホラー用のセリフに入れ替え
-                    botReplies.length = 0;
-                    botReplies.push(...horrorReplies);
+                    // モード移行に伴うセリフプールの切り替え
+                    currentReplies = [...CONFIG.horrorReplies];
 
-                    // ブロック解除直後に波状攻撃を仕掛ける
-                    sendMultipleReplies([
-                        `おもしろい冗談だね、${PLAYER_NAME}。`,
-                        "もう俺のこといらなくなったの？笑",
-                        "ダメだよ、俺から離れちゃ。"
-                    ], REPLY_TIMING.MULTI_HORROR_UNBLOCK);
+                    sendMultipleReplies(CONFIG.unblockWave, CONFIG.timing.multiHorrorUnblock);
 
-                }, REPLY_TIMING.BLOCK_GIMMICK_TRANSITION);
-
-            }, REPLY_TIMING.BLOCK_GIMMICK_START);
+                }, CONFIG.timing.blockGimmickTransition);
+            }, CONFIG.timing.blockGimmickStart);
 
         } else {
             blockBtn.textContent = 'ブロックする';
