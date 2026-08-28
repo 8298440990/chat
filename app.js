@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // テンプレート設定
     // ==========================================
     const CONFIG = {
-        playerName: "", // 空文字の場合、名前部分は表示されません
+        playerName: "ハヤト", // 空文字の場合、名前部分は表示されません
         botName: "神罪閣下親王",
         botIcon: "image/icon.png",
         
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
         timing: {
             normalReply: 1500,         // ユーザー送信後の返信時間
             autoSpamNormal: 5000,      // 放置時の自動送信間隔（通常）
-            autoSpamHorror: 2000,      // 放置時の自動送信間隔（ホラー）
+            autoSpamHorror: 200,       // 放置時の自動送信間隔（ホラー）
             multiHorrorUnblock: 1500,  // 強制ブロック解除直後の連投間隔
             multiHorrorEscape: 800,    // 「逃げる」時の連投間隔
             blockGimmickStart: 1500,   // ブロック後「入力中...」が出るまで
