@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // テンプレート設定（セリフ増量・調整版）
     // ==========================================
     const CONFIG = {
-        playerName: "", // 空文字の場合、名前部分は表示されません
+        playerName: "",
         botName: "神罪閣下親王",
         botIcon: "image/icon.png",
         
