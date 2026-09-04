@@ -7,7 +7,7 @@ const urlsToCache = [
   './style.css',
   './image/icon.png',
   './image/bg.png',
-  './image/favicon.png',
+  './image/favicon.png'
 ];
 
 // インストール時にアセットをキャッシュ
